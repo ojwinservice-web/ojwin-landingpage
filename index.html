@@ -49,7 +49,7 @@
             border-top: 5px solid var(--primary-color);
         }
 
-        /* 1. Brand Header Section (Matte Gray Style) */
+        /* Brand Header Section */
         .brand-header {
             text-align: center;
             margin-bottom: 25px;
@@ -74,7 +74,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* 2. New Subtitle text replacing the old slogan */
         .brand-slogan {
             color: #e2e8f0;
             font-size: 0.95rem;
@@ -120,7 +119,6 @@
             color: var(--primary-color);
         }
 
-        /* 4. Min Area Info Banner inside rows */
         .area-info-text {
             display: block;
             font-size: 0.78rem;
@@ -191,7 +189,7 @@
             font-size: 1.05rem;
         }
 
-        /* Action & Helper Buttons */
+        /* Action Buttons */
         .action-buttons-group {
             display: flex;
             flex-direction: column;
@@ -219,7 +217,6 @@
             background: rgba(20, 94, 97, 0.05);
         }
 
-        /* 5. Measurement Guide Button styling */
         .btn-guide-trigger {
             display: flex;
             align-items: center;
@@ -271,6 +268,7 @@
         .lead-form {
             border-top: 1px solid var(--border-color);
             padding-top: 20px;
+            margin-bottom: 25px;
         }
 
         .lead-form h3 {
@@ -289,7 +287,7 @@
 
         .btn-submit {
             width: 100%;
-            background-color: #d69e2e; /* Matte accent gold */
+            background-color: #d69e2e;
             color: #fff;
             border: none;
             padding: 14px;
@@ -302,6 +300,62 @@
 
         .btn-submit:hover {
             background-color: #b7791f;
+        }
+
+        /* Elegant Social Media Section */
+        .social-media-box {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .social-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 11px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Instagram styling */
+        .btn-instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff;
+        }
+
+        /* Rubika styling */
+        .btn-rubika {
+            background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+            color: #ffffff;
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         /* Notifications */
@@ -323,7 +377,7 @@
             color: var(--success-color);
         }
 
-        /* 📸 Elegant Pop-up Modal for the Measurement Guide Image */
+        /* Pop-up Modal */
         .guide-modal {
             display: none; 
             position: fixed;
@@ -381,7 +435,7 @@
             display: block;
         }
 
-        /* Responsive Layout Grid Adaptations */
+        /* Responsive Layout Grid */
         @media (min-width: 500px) {
             .inputs-grid {
                 grid-template-columns: 1fr 1fr 1.2fr;
@@ -396,6 +450,12 @@
                 flex: 2;
             }
             .btn-guide-trigger {
+                flex: 1;
+            }
+            .social-buttons {
+                flex-direction: row;
+            }
+            .social-btn {
                 flex: 1;
             }
         }
@@ -443,6 +503,24 @@
             
             <div id="alertBox" class="alert-message"></div>
         </form>
+
+        <div class="social-media-box">
+            <div class="social-title">با ما در ارتباط باشید</div>
+            <div class="social-buttons">
+                <a href="#" id="instagramLink" target="_blank" class="social-btn btn-instagram">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                    <span>با ما در اینستاگرام بیشتر آشنا شوید</span>
+                </a>
+                <a href="#" id="rubikaLink" target="_blank" class="social-btn btn-rubika">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    <span>کانال روبیکای اوج وین</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div id="measurementGuideModal" class="guide-modal" onclick="closeGuideModalOutside(event)">
@@ -453,6 +531,10 @@
     </div>
 
     <script>
+        // 🔴 تنظیمات آدرس شبکه‌های اجتماعی
+        const INSTAGRAM_URL = "https://www.instagram.com/ojwin_service?igsh=NGZ4dHBreGw0eWd2"; 
+        const RUBIKA_URL = "https://rubika.ir/page/Rayanshargh";       
+
         // 🔴 تنظیمات اتصال به ربات تلگرام
         const TELEGRAM_BOT_TOKEN = "8890320684:AAF04n-RtbYd7MvNoUaMVYdfsR7wNxVzUTU";
         const TELEGRAM_CHAT_ID = "78048785";
@@ -477,6 +559,10 @@
         const MIN_BILLABLE_AREA = 1.15;
         let rowCounter = 0;
 
+        // Apply social links dynamically
+        document.getElementById('instagramLink').href = INSTAGRAM_URL;
+        document.getElementById('rubikaLink').href = RUBIKA_URL;
+
         // Modal triggers
         function openGuideModal() {
             document.getElementById('measurementGuideModal').style.display = 'flex';
@@ -496,7 +582,6 @@
             rowDiv.className = 'row-item';
             rowDiv.id = `row_${rowCounter}`;
             
-            // 3 & 4. Added exact billing notice rule and fixed field label to 'رنگ فریم آلومینیوم'
             rowDiv.innerHTML = `
                 <div class="row-header">
                     <span>ردیف #${container.children.length + 1}</span>
