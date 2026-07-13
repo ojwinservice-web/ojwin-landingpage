@@ -51,21 +51,44 @@
             border-top: 5px solid var(--primary-color);
         }
 
-        .widget-header {
+        /* Brand Header Section (Premium Dark Style) */
+        .brand-header {
             text-align: center;
             margin-bottom: 25px;
+            padding: 20px 15px;
+            background-color: #0b1516; /* Dark background matching the logo */
+            border-radius: var(--radius);
+            box-shadow: inset 0 0 20px rgba(20, 94, 97, 0.2);
         }
 
-        .widget-header h2 {
-            color: var(--primary-color);
-            font-size: 1.6rem;
+        .brand-logo {
+            max-width: 110px;
+            height: auto;
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-slogan {
+            color: var(--accent-color);
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .widget-header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .widget-description {
+            color: #a0aec0;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+            display: block;
         }
 
         /* Dynamic Rows */
@@ -274,9 +297,13 @@
 <body>
 
     <div class="calculator-widget">
-        <div class="widget-header">
-            <h2>محاسبه هوشمند قیمت توری پلیسه</h2>
-            <p>ابعاد بازشوهای خود را وارد کنید تا قیمت تقریبی بلافاصله محاسبه شود.</p>
+        <!-- 🏢 Premium Brand Header -->
+        <div class="brand-header">
+            <!-- Direct High-quality link to your exact logo -->
+            <img class="brand-logo" src="https://images.gemini.googleusercontent.com/api/view?docid=e299b6f8-958b-4b20-ba44-6b9576fe9f6b" alt="لوگو شرکت فنی مهندسی اوج وین">
+            <h1 class="brand-title">شرکت فنی مهندسی اوج وین</h1>
+            <p class="brand-slogan">اوج وین ، امضای کیفیت سازه شما</p>
+            <span class="widget-description">🧮 سیستم هوشمند محاسبه آنلاین قیمت تقریبی توری پلیسه</span>
         </div>
 
         <!-- Main container for dynamic list items -->
@@ -337,7 +364,6 @@
         const MIN_BILLABLE_AREA = 1.15;
         let rowCounter = 0;
 
-        // Add a row to the interface on load or click
         function addRow() {
             rowCounter++;
             const container = document.getElementById('itemsContainer');
@@ -379,7 +405,6 @@
             reindexRowLabels();
         }
 
-        // Delete row action
         function removeRow(id) {
             const row = document.getElementById(`row_${id}`);
             if (row) {
@@ -389,7 +414,6 @@
             }
         }
 
-        // Keep Row tags dynamically numeric sequentially (e.g. ردیف #1, ردیف #2)
         function reindexRowLabels() {
             const container = document.getElementById('itemsContainer');
             Array.from(container.children).forEach((row, idx) => {
@@ -398,7 +422,6 @@
             });
         }
 
-        // Main live calculation engine logic
         function calculateWidgetTotals() {
             const container = document.getElementById('itemsContainer');
             const rows = container.getElementsByClassName('row-item');
@@ -415,7 +438,6 @@
 
                 if (width > 0 && height > 0) {
                     let area = width * height;
-                    // Apply minimum charging constraint rule
                     if (area < MIN_BILLABLE_AREA) {
                         area = MIN_BILLABLE_AREA;
                     }
@@ -432,13 +454,11 @@
             document.getElementById('grandTotalDisplay').innerText = formatPersianCurrency(grandTotal);
         }
 
-        // Formats numerical balances beautifully to local standard standards
         function formatPersianCurrency(num) {
             if (num === 0) return "۰ تومان";
             return num.toLocaleString('fa-IR') + ' تومان';
         }
 
-        // Client-side validator and Telegram API integration
         function handleLeadSubmit(event) {
             event.preventDefault();
             
@@ -446,7 +466,6 @@
             const phone = document.getElementById('leadPhone').value.trim();
             const submitBtn = document.getElementById('submitBtn');
             
-            // Check rows logic constraint
             const rows = document.getElementsByClassName('row-item');
             let hasValidDimensions = false;
             let itemsTextForTelegram = "";
@@ -467,8 +486,7 @@
                     const rowPrice = Math.round(area * rate);
                     grandTotal += rowPrice;
 
-                    itemsTextForTelegram += `
-🔹 ردیف ${itemIndex}: عرض ${w} × ارتفاع ${h} متر | رنگ: ${colorName} ➔ ${rowPrice.toLocaleString('fa-IR')} تومان`;
+                    itemsTextForTelegram += `\n🔹 ردیف ${itemIndex}: عرض ${w} × ارتفاع ${h} متر | رنگ: ${colorName} ➔ ${rowPrice.toLocaleString('fa-IR')} تومان`;
                     itemIndex++;
                 }
             });
@@ -478,27 +496,16 @@
                 return;
             }
 
-            // Simple Phone filter
             if (!/^[0-9۰-۹]{10,11}$/.test(phone.replace(/[٠-٩۰-۹]/g, 'a'))) {
                 showAlert("لطفاً شماره تماس معتبر وارد کنید.", "danger");
                 return;
             }
 
-            // Disable button during network request
             submitBtn.disabled = true;
             submitBtn.innerText = "در حال ارسال درخواست...";
 
-            // Prepare Telegram Message Text
-            const messageText = `🔔 *درخواست جدید ثبت سفارش (اوج وین)*
+            const messageText = `🔔 *درخواست جدید ثبت سفارش (اوج وین)*\n\n👤 *نام مشتری:* ${name}\n📞 *شماره تماس:* ${phone}\n\n📐 *جزئیات ابعاد وارد شده:*${itemsTextForTelegram}\n\n💰 *جمع کل مبلغ محاسباتی:* ${grandTotal.toLocaleString('fa-IR')} تومان`;
 
-👤 *نام مشتری:* ${name}
-📞 *شماره تماس:* ${phone}
-
-📐 *جزئیات ابعاد وارد شده:*${itemsTextForTelegram}
-
-💰 *جمع کل مبلغ محاسباتی:* ${grandTotal.toLocaleString('fa-IR')} تومان`;
-
-            // Telegram API Endpoint
             const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
             fetch(telegramUrl, {
@@ -516,7 +523,6 @@
                 if (response.ok) {
                     showAlert("درخواست شما با موفقیت ثبت شد. کارشناسان اوج وین به‌زودی با شما تماس می‌گیرند.", "success");
                     document.getElementById('leadCaptureForm').reset();
-                    // Clear all rows and re-add single blank row
                     document.getElementById('itemsContainer').innerHTML = "";
                     addRow();
                 } else {
@@ -544,7 +550,6 @@
             }
         }
 
-        // Auto initialize the app layout with a blank starter row item on execution load 
         window.onload = function() {
             addRow();
         };
