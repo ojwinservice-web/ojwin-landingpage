@@ -471,6 +471,10 @@
             <span class="widget-description">🧮 سیستم هوشمند محاسبه آنلاین قیمت تقریبی توری پلیسه</span>
         </div>
 
+        <div class="promo-banner">
+            <img src="banner.jpg" alt="توری پلیسه مدرن اوج وین - دوام و زیبایی" style="width:100%; display:block; border-radius: var(--radius); margin-bottom: 20px;">
+        </div>
+
         <div class="items-container" id="itemsContainer"></div>
 
         <div class="action-buttons-group">
@@ -482,9 +486,13 @@
             </button>
         </div>
 
-        <div class="summary-card">
+        <div class="summary-card" id="summaryCard" style="display:none;">
             <div class="summary-title">جمع کل مـبلغ:</div>
             <div class="summary-total" id="grandTotalDisplay">۰ تومان</div>
+        </div>
+
+        <div class="alert-message" id="priceLockNote" style="display:none; background:#EFF3F7; border:1px solid #DCE4EC; color:#24405C; border-radius:12px; padding:14px 16px; margin-bottom:16px; font-size:13.5px; line-height:1.9; text-align:center;">
+            🔒 برای مشاهده قیمت نهایی، لطفاً فرم زیر را با نام و شماره تماس خود تکمیل و ثبت کنید.
         </div>
 
         <form class="lead-form" id="leadCaptureForm" onsubmit="handleLeadSubmit(event)">
@@ -558,6 +566,7 @@
 
         const MIN_BILLABLE_AREA = 1.15;
         let rowCounter = 0;
+        let priceUnlocked = false;
 
         // Apply social links dynamically
         document.getElementById('instagramLink').href = INSTAGRAM_URL;
@@ -608,7 +617,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row-price-display">قیمت این ردیف: <span id="price_span_${rowCounter}">۰ تومان</span></div>
+                <div class="row-price-display" style="display:none;">قیمت این ردیف: <span id="price_span_${rowCounter}">۰ تومان</span></div>
             `;
             
             container.appendChild(rowDiv);
@@ -637,32 +646,36 @@
             const container = document.getElementById('itemsContainer');
             const rows = container.getElementsByClassName('row-item');
             let grandTotal = 0;
+            let hasValidDimensions = false;
 
             Array.from(rows).forEach(row => {
-                const id = row.id.split('_')[1];
                 const width = parseFloat(row.querySelector('.val-width').value) || 0;
                 const height = parseFloat(row.querySelector('.val-height').value) || 0;
                 const colorKey = row.querySelector('.val-color').value;
-                const priceSpan = document.getElementById(`price_span_${id}`);
-                
-                let rowTotal = 0;
 
                 if (width > 0 && height > 0) {
+                    hasValidDimensions = true;
                     let area = width * height;
                     if (area < MIN_BILLABLE_AREA) {
                         area = MIN_BILLABLE_AREA;
                     }
                     const rate = COLOR_PRICES[colorKey] || 0;
-                    rowTotal = Math.round(area * rate);
-                    grandTotal += rowTotal;
-
-                    priceSpan.innerText = formatPersianCurrency(rowTotal);
-                } else {
-                    priceSpan.innerText = "۰ تومان";
+                    grandTotal += Math.round(area * rate);
                 }
             });
 
-            document.getElementById('grandTotalDisplay').innerText = formatPersianCurrency(grandTotal);
+            // If the customer already unlocked a price and then changes the
+            // dimensions afterwards, re-lock it so a stale price is never shown.
+            if (priceUnlocked) {
+                priceUnlocked = false;
+                document.getElementById('summaryCard').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').innerText = "درخواست ثبت سفارش";
+            }
+
+            // Prices stay hidden until the lead form is submitted; only show
+            // a prompt telling the customer to fill in their info to see the price.
+            document.getElementById('priceLockNote').style.display = hasValidDimensions ? 'block' : 'none';
         }
 
         function formatPersianCurrency(num) {
@@ -732,10 +745,12 @@
             })
             .then(response => {
                 if (response.ok) {
+                    priceUnlocked = true;
+                    document.getElementById('priceLockNote').style.display = 'none';
+                    document.getElementById('grandTotalDisplay').innerText = formatPersianCurrency(grandTotal);
+                    document.getElementById('summaryCard').style.display = 'block';
                     showAlert("درخواست شما با موفقیت ثبت شد. کارشناسان اوج وین به‌زودی با شما تماس می‌گیرند.", "success");
-                    document.getElementById('leadCaptureForm').reset();
-                    document.getElementById('itemsContainer').innerHTML = "";
-                    addRow();
+                    submitBtn.innerText = "ثبت شد ✓";
                 } else {
                     showAlert("خطا در ارسال اطلاعات به تلگرام. لطفا مجددا تلاش کنید یا تماس بگیرید.", "danger");
                 }
@@ -745,8 +760,8 @@
                 showAlert("خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید.", "danger");
             })
             .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "درخواست ثبت سفارش";
+                submitBtn.disabled = priceUnlocked;
+                if(!priceUnlocked) submitBtn.innerText = "درخواست ثبت سفارش";
             });
         }
 
