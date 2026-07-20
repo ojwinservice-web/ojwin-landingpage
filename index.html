@@ -507,6 +507,12 @@
                     <input type="tel" id="leadPhone" class="form-control" placeholder="مثال: 09123456789" style="text-align: left; direction: ltr;" required>
                 </div>
             </div>
+
+            <div class="form-group" style="margin-bottom:15px;">
+                <label for="leadPhoto">عکس محل نصب (اختیاری - برای راهنمایی دقیق‌تر)</label>
+                <input type="file" id="leadPhoto" class="form-control" accept="image/*" style="padding:8px;" onchange="previewLeadPhoto(event)">
+                <img id="photoPreview" style="display:none; max-width:100%; max-height:180px; border-radius:8px; margin-top:10px; object-fit:contain;">
+            </div>
             <button type="submit" class="btn-submit" id="submitBtn">درخواست ثبت سفارش</button>
             
             <div id="alertBox" class="alert-message"></div>
@@ -678,6 +684,21 @@
             document.getElementById('priceLockNote').style.display = hasValidDimensions ? 'block' : 'none';
         }
 
+        function previewLeadPhoto(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('photoPreview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
         function formatPersianCurrency(num) {
             if (num === 0) return "۰ تومان";
             return num.toLocaleString('fa-IR') + ' تومان';
@@ -751,6 +772,20 @@
                     document.getElementById('summaryCard').style.display = 'block';
                     showAlert("درخواست شما با موفقیت ثبت شد. کارشناسان اوج وین به‌زودی با شما تماس می‌گیرند.", "success");
                     submitBtn.innerText = "ثبت شد ✓";
+
+                    // If the customer attached a photo of their window/space,
+                    // send it as a separate message right after the text one.
+                    const photoFile = document.getElementById('leadPhoto').files[0];
+                    if (photoFile) {
+                        const photoForm = new FormData();
+                        photoForm.append('chat_id', TELEGRAM_CHAT_ID);
+                        photoForm.append('caption', `📷 عکس ارسالی از ${name} (${phone})`);
+                        photoForm.append('photo', photoFile);
+                        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                            method: 'POST',
+                            body: photoForm
+                        }).catch(err => console.error('Photo send failed', err));
+                    }
                 } else {
                     showAlert("خطا در ارسال اطلاعات به تلگرام. لطفا مجددا تلاش کنید یا تماس بگیرید.", "danger");
                 }
