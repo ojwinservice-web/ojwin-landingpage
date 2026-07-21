@@ -316,58 +316,69 @@
             font-weight: 700;
         }
 
-        .social-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* Contact cards grid - modern 2x2 icon-forward layout */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .social-btn {
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 10px;
+            text-decoration: none;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .contact-card:hover,
+        .contact-card:active {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(20, 94, 97, 0.14);
+            border-color: var(--primary-light);
+        }
+
+        .contact-icon-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 11px 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 700;
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
 
-        .social-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
-        }
-
-        /* Instagram styling */
-        .btn-instagram {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: #ffffff;
-        }
-
-        /* Rubika styling */
-        .btn-rubika {
-            background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
-            color: #ffffff;
-        }
-
-        /* Call button styling */
-        .btn-call {
+        .badge-call {
             background: linear-gradient(135deg, #145E61 0%, #0d4244 100%);
-            color: #ffffff;
         }
-
-        /* Bale support channel styling */
-        .btn-bale {
+        .badge-bale {
             background: linear-gradient(135deg, #FF9900 0%, #E67E00 100%);
-            color: #ffffff;
+        }
+        .badge-instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        .badge-rubika {
+            background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
         }
 
-        .social-icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
+        .contact-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (min-width: 500px) {
+            .contact-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         /* Notifications */
@@ -464,12 +475,6 @@
             .btn-guide-trigger {
                 flex: 1;
             }
-            .social-buttons {
-                flex-direction: row;
-            }
-            .social-btn {
-                flex: 1;
-            }
         }
     </style>
 </head>
@@ -539,24 +544,32 @@
 
         <div class="social-media-box">
             <div class="social-title">با ما در ارتباط باشید</div>
-            <div class="social-buttons">
-                <a href="tel:09967931159" class="social-btn btn-call">
-                    <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 2 .7 3a2 2 0 01-.4 2.1L8 10.3a16 16 0 006 6l1.5-1.4a2 2 0 012.1-.4c1 .4 2 .6 3 .7a2 2 0 011.7 2z"/>
-                    </svg>
-                    <span>تماس با پشتیبانی</span>
+            <div class="contact-grid">
+                <a href="tel:09967931159" class="contact-card">
+                    <span class="contact-icon-badge badge-call">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.2">
+                            <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.7A2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 2 .7 3a2 2 0 01-.4 2.1L8 10.3a16 16 0 006 6l1.5-1.4a2 2 0 012.1-.4c1 .4 2 .6 3 .7a2 2 0 011.7 2z"/>
+                        </svg>
+                    </span>
+                    <span class="contact-label">تماس با پشتیبانی</span>
                 </a>
-                <a href="https://ble.ir/ojwin_mhd" id="baleLink" target="_blank" class="social-btn btn-bale">
-                    <img class="social-icon" src="bale-icon.jpg" alt="بله" style="border-radius:4px;">
-                    <span>کانال پشتیبانی در بله</span>
+                <a href="https://ble.ir/ojwin_mhd" id="baleLink" target="_blank" class="contact-card">
+                    <span class="contact-icon-badge badge-bale">
+                        <img src="bale-icon.jpg" alt="بله" style="width:26px; height:26px; border-radius:6px; object-fit:cover;">
+                    </span>
+                    <span class="contact-label">کانال پشتیبانی در بله</span>
                 </a>
-                <a href="#" id="instagramLink" target="_blank" class="social-btn btn-instagram">
-                    <img class="social-icon" src="instagram-icon.png" alt="اینستاگرام">
-                    <span>با ما در اینستاگرام بیشتر آشنا شوید</span>
+                <a href="#" id="instagramLink" target="_blank" class="contact-card">
+                    <span class="contact-icon-badge badge-instagram">
+                        <img src="instagram-icon.png" alt="اینستاگرام" style="width:26px; height:26px; border-radius:6px; object-fit:cover;">
+                    </span>
+                    <span class="contact-label">اینستاگرام اوج وین</span>
                 </a>
-                <a href="#" id="rubikaLink" target="_blank" class="social-btn btn-rubika">
-                    <img class="social-icon" src="rubika-icon.png" alt="روبیکا">
-                    <span>کانال روبیکای اوج وین</span>
+                <a href="#" id="rubikaLink" target="_blank" class="contact-card">
+                    <span class="contact-icon-badge badge-rubika">
+                        <img src="rubika-icon.png" alt="روبیکا" style="width:26px; height:26px; border-radius:6px; object-fit:cover;">
+                    </span>
+                    <span class="contact-label">کانال روبیکای اوج وین</span>
                 </a>
             </div>
         </div>
@@ -582,263 +595,4 @@
         const COLOR_PRICES = {
             "white": 2900000,
             "black": 3100000,
-            "brown": 3200000,
-            "champagne": 4200000,
-            "beige": 4200000
-        };
-
-        const COLOR_NAMES_FA = {
-            "white": "سفید",
-            "black": "مشکی",
-            "brown": "قهوه‌ای",
-            "champagne": "شامپاینی",
-            "beige": "بژ"
-        };
-
-        const MIN_BILLABLE_AREA = 1.15;
-        let rowCounter = 0;
-        let priceUnlocked = false;
-
-        // Apply social links dynamically
-        document.getElementById('instagramLink').href = INSTAGRAM_URL;
-        document.getElementById('rubikaLink').href = RUBIKA_URL;
-
-        // Modal triggers
-        function openGuideModal() {
-            document.getElementById('measurementGuideModal').style.display = 'flex';
-        }
-        function closeGuideModal() {
-            document.getElementById('measurementGuideModal').style.display = 'none';
-        }
-        function closeGuideModalOutside(e) {
-            if (e.target.id === 'measurementGuideModal') closeGuideModal();
-        }
-
-        function addRow() {
-            rowCounter++;
-            const container = document.getElementById('itemsContainer');
-            
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'row-item';
-            rowDiv.id = `row_${rowCounter}`;
-            
-            rowDiv.innerHTML = `
-                <div class="row-header">
-                    <span>ردیف #${container.children.length + 1}</span>
-                    ${container.children.length > 0 ? `<button type="button" class="btn-remove" onclick="removeRow(${rowCounter})">✕</button>` : ''}
-                </div>
-                <span class="area-info-text">⚠️ توجه: طبق استاندارد، ابعاد مجموعاً زیر ۱.۱۵ متر مربع، همان ۱.۱۵ محاسبه می‌شود.</span>
-                <div class="inputs-grid">
-                    <div class="form-group">
-                        <label>عرض (متر)</label>
-                        <input type="number" step="0.01" min="0.1" class="form-control val-width" placeholder="مثال: 1.2" oninput="calculateWidgetTotals()">
-                    </div>
-                    <div class="form-group">
-                        <label>ارتفاع (متر)</label>
-                        <input type="number" step="0.01" min="0.1" class="form-control val-height" placeholder="مثال: 1.8" oninput="calculateWidgetTotals()">
-                    </div>
-                    <div class="form-group">
-                        <label>رنگ فریم آلومینیوم</label>
-                        <select class="form-control val-color" onchange="calculateWidgetTotals()">
-                            <option value="white">سفید</option>
-                            <option value="black">مشکی</option>
-                            <option value="brown">قهوه‌ای</option>
-                            <option value="champagne">شامپاینی</option>
-                            <option value="beige">بژ</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row-price-display" style="display:none;">قیمت این ردیف: <span id="price_span_${rowCounter}">۰ تومان</span></div>
-            `;
-            
-            container.appendChild(rowDiv);
-            calculateWidgetTotals();
-            reindexRowLabels();
-        }
-
-        function removeRow(id) {
-            const row = document.getElementById(`row_${id}`);
-            if (row) {
-                row.remove();
-                calculateWidgetTotals();
-                reindexRowLabels();
-            }
-        }
-
-        function reindexRowLabels() {
-            const container = document.getElementById('itemsContainer');
-            Array.from(container.children).forEach((row, idx) => {
-                const label = row.querySelector('.row-header span');
-                if (label) label.innerText = `ردیف #${idx + 1}`;
-            });
-        }
-
-        function calculateWidgetTotals() {
-            const container = document.getElementById('itemsContainer');
-            const rows = container.getElementsByClassName('row-item');
-            let grandTotal = 0;
-            let hasValidDimensions = false;
-
-            Array.from(rows).forEach(row => {
-                const width = parseFloat(row.querySelector('.val-width').value) || 0;
-                const height = parseFloat(row.querySelector('.val-height').value) || 0;
-                const colorKey = row.querySelector('.val-color').value;
-
-                if (width > 0 && height > 0) {
-                    hasValidDimensions = true;
-                    let area = width * height;
-                    if (area < MIN_BILLABLE_AREA) {
-                        area = MIN_BILLABLE_AREA;
-                    }
-                    const rate = COLOR_PRICES[colorKey] || 0;
-                    grandTotal += Math.round(area * rate);
-                }
-            });
-
-            // If the customer already unlocked a price and then changes the
-            // dimensions afterwards, re-lock it so a stale price is never shown.
-            if (priceUnlocked) {
-                priceUnlocked = false;
-                document.getElementById('summaryCard').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
-                document.getElementById('submitBtn').innerText = "درخواست ثبت سفارش";
-            }
-
-            // Prices stay hidden until the lead form is submitted; only show
-            // a prompt telling the customer to fill in their info to see the price.
-            document.getElementById('priceLockNote').style.display = hasValidDimensions ? 'block' : 'none';
-        }
-
-        function previewLeadPhoto(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('photoPreview');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        function formatPersianCurrency(num) {
-            if (num === 0) return "۰ تومان";
-            return num.toLocaleString('fa-IR') + ' تومان';
-        }
-
-        function handleLeadSubmit(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('leadName').value.trim();
-            const phone = document.getElementById('leadPhone').value.trim();
-            const submitBtn = document.getElementById('submitBtn');
-            
-            const rows = document.getElementsByClassName('row-item');
-            let hasValidDimensions = false;
-            let itemsTextForTelegram = "";
-            let itemIndex = 1;
-            let grandTotal = 0;
-
-            Array.from(rows).forEach(row => {
-                const w = parseFloat(row.querySelector('.val-width').value) || 0;
-                const h = parseFloat(row.querySelector('.val-height').value) || 0;
-                const colorKey = row.querySelector('.val-color').value;
-                const colorName = COLOR_NAMES_FA[colorKey];
-
-                if (w > 0 && h > 0) {
-                    hasValidDimensions = true;
-                    let area = w * h;
-                    if (area < MIN_BILLABLE_AREA) area = MIN_BILLABLE_AREA;
-                    const rate = COLOR_PRICES[colorKey] || 0;
-                    const rowPrice = Math.round(area * rate);
-                    grandTotal += rowPrice;
-
-                    itemsTextForTelegram += `\n🔹 ردیف ${itemIndex}: عرض ${w} × ارتفاع ${h} متر | فریم: ${colorName} ➔ ${rowPrice.toLocaleString('fa-IR')} تومان`;
-                    itemIndex++;
-                }
-            });
-
-            if (!hasValidDimensions) {
-                showAlert("لطفاً حداقل ابعاد (عرض و ارتفاع) یک پنجره را به صورت معتبر وارد کنید.", "danger");
-                return;
-            }
-
-            if (!/^[0-9۰-۹]{10,11}$/.test(phone.replace(/[٠-٩۰-۹]/g, 'a'))) {
-                showAlert("لطفاً شماره تماس معتبر وارد کنید.", "danger");
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = "در حال ارسال درخواست...";
-
-            const messageText = `🔔 *درخواست جدید ثبت سفارش (اوج وین)*\n\n👤 *نام مشتری:* ${name}\n📞 *شماره تماس:* ${phone}\n\n📐 *جزئیات ابعاد وارد شده:*${itemsTextForTelegram}\n\n💰 *جمع کل مبلغ محاسباتی:* ${grandTotal.toLocaleString('fa-IR')} تومان`;
-
-            const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-            fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: messageText,
-                    parse_mode: 'Markdown'
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    priceUnlocked = true;
-                    document.getElementById('priceLockNote').style.display = 'none';
-                    document.getElementById('grandTotalDisplay').innerText = formatPersianCurrency(grandTotal);
-                    document.getElementById('summaryCard').style.display = 'block';
-                    showAlert("درخواست شما با موفقیت ثبت شد. کارشناسان اوج وین به‌زودی با شما تماس می‌گیرند.", "success");
-                    submitBtn.innerText = "ثبت شد ✓";
-
-                    // If the customer attached a photo of their window/space,
-                    // send it as a separate message right after the text one.
-                    const photoFile = document.getElementById('leadPhoto').files[0];
-                    if (photoFile) {
-                        const photoForm = new FormData();
-                        photoForm.append('chat_id', TELEGRAM_CHAT_ID);
-                        photoForm.append('caption', `📷 عکس ارسالی از ${name} (${phone})`);
-                        photoForm.append('photo', photoFile);
-                        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-                            method: 'POST',
-                            body: photoForm
-                        }).catch(err => console.error('Photo send failed', err));
-                    }
-                } else {
-                    showAlert("خطا در ارسال اطلاعات به تلگرام. لطفا مجددا تلاش کنید یا تماس بگیرید.", "danger");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert("خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید.", "danger");
-            })
-            .finally(() => {
-                submitBtn.disabled = priceUnlocked;
-                if(!priceUnlocked) submitBtn.innerText = "درخواست ثبت سفارش";
-            });
-        }
-
-        function showAlert(msg, type) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.innerText = msg;
-            alertBox.className = `alert-message alert-${type}`;
-            alertBox.style.display = 'block';
-            
-            if(type === 'success') {
-                setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
-            }
-        }
-
-        window.onload = function() {
-            addRow();
-        };
-    </script>
-</body>
-</html>
+            "brown": 320000
