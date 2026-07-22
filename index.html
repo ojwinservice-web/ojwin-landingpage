@@ -485,10 +485,7 @@
         </div>
 
         <div class="promo-banner">
-            <img src="banner.jpg" alt="توری پلیسه مدرن اوج وین - دوام و زیبایی" style="width:100%; display:block; border-radius: var(--radius); margin-bottom: 14px;">
-            <button type="button" class="btn-guide-trigger" onclick="openGuideModal()" style="margin-bottom:20px;">
-                <span>📐</span> راهنمای متراژ و اندازه‌گیری
-            </button>
+            <img src="banner.jpg" alt="توری پلیسه مدرن اوج وین - دوام و زیبایی" style="width:100%; display:block; border-radius: var(--radius); margin-bottom: 20px;">
         </div>
 
         <div class="items-container" id="itemsContainer"></div>
@@ -496,6 +493,9 @@
         <div class="action-buttons-group">
             <button type="button" class="btn-add-row" onclick="addRow()">
                 <span>➕</span> افزودن ابعاد پنجره دیگر
+            </button>
+            <button type="button" class="btn-guide-trigger" onclick="openGuideModal()">
+                <span>📐</span> راهنمای متراژ و اندازه‌گیری
             </button>
         </div>
 
@@ -600,4 +600,4 @@
             document.getElementById('measurementGuideModal').style.display = 'flex';
         }
         function closeGuideModal() {
-          
+            document.getElementById('m
