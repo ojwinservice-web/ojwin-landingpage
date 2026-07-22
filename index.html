@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -486,7 +485,10 @@
         </div>
 
         <div class="promo-banner">
-            <img src="banner.jpg" alt="توری پلیسه مدرن اوج وین - دوام و زیبایی" style="width:100%; display:block; border-radius: var(--radius); margin-bottom: 20px;">
+            <img src="banner.jpg" alt="توری پلیسه مدرن اوج وین - دوام و زیبایی" style="width:100%; display:block; border-radius: var(--radius); margin-bottom: 14px;">
+            <button type="button" class="btn-guide-trigger" onclick="openGuideModal()" style="margin-bottom:20px;">
+                <span>📐</span> راهنمای متراژ و اندازه‌گیری
+            </button>
         </div>
 
         <div class="items-container" id="itemsContainer"></div>
@@ -494,9 +496,6 @@
         <div class="action-buttons-group">
             <button type="button" class="btn-add-row" onclick="addRow()">
                 <span>➕</span> افزودن ابعاد پنجره دیگر
-            </button>
-            <button type="button" class="btn-guide-trigger" onclick="openGuideModal()">
-                <span>📐</span> راهنمای متراژ و اندازه‌گیری
             </button>
         </div>
 
@@ -601,231 +600,4 @@
             document.getElementById('measurementGuideModal').style.display = 'flex';
         }
         function closeGuideModal() {
-            document.getElementById('measurementGuideModal').style.display = 'none';
-        }
-        function closeGuideModalOutside(e) {
-            if (e.target.id === 'measurementGuideModal') closeGuideModal();
-        }
-
-        function addRow() {
-            rowCounter++;
-            const container = document.getElementById('itemsContainer');
-            
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'row-item';
-            rowDiv.id = `row_${rowCounter}`;
-            
-            rowDiv.innerHTML = `
-                <div class="row-header">
-                    <span>ردیف #${container.children.length + 1}</span>
-                    ${container.children.length > 0 ? `<button type="button" class="btn-remove" onclick="removeRow(${rowCounter})">✕</button>` : ''}
-                </div>
-                <span class="area-info-text">⚠️ توجه: طبق استاندارد، ابعاد مجموعاً زیر ۱.۱۵ متر مربع، همان ۱.۱۵ محاسبه می‌شود.</span>
-                <div class="inputs-grid">
-                    <div class="form-group">
-                        <label>عرض (متر)</label>
-                        <input type="number" step="0.01" min="0.1" class="form-control val-width" placeholder="مثال: 1.2" oninput="calculateWidgetTotals()">
-                    </div>
-                    <div class="form-group">
-                        <label>ارتفاع (متر)</label>
-                        <input type="number" step="0.01" min="0.1" class="form-control val-height" placeholder="مثال: 1.8" oninput="calculateWidgetTotals()">
-                    </div>
-                    <div class="form-group">
-                        <label>رنگ فریم آلومینیوم</label>
-                        <select class="form-control val-color" onchange="calculateWidgetTotals()">
-                            <option value="white">سفید</option>
-                            <option value="black">مشکی</option>
-                            <option value="brown">قهوه‌ای</option>
-                            <option value="champagne">شامپاینی</option>
-                            <option value="beige">بژ</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row-price-display" style="display:none;">قیمت این ردیف: <span id="price_span_${rowCounter}">۰ تومان</span></div>
-            `;
-            
-            container.appendChild(rowDiv);
-            calculateWidgetTotals();
-            reindexRowLabels();
-        }
-
-        function removeRow(id) {
-            const row = document.getElementById(`row_${id}`);
-            if (row) {
-                row.remove();
-                calculateWidgetTotals();
-                reindexRowLabels();
-            }
-        }
-
-        function reindexRowLabels() {
-            const container = document.getElementById('itemsContainer');
-            Array.from(container.children).forEach((row, idx) => {
-                const label = row.querySelector('.row-header span');
-                if (label) label.innerText = `ردیف #${idx + 1}`;
-            });
-        }
-
-        function calculateWidgetTotals() {
-            const container = document.getElementById('itemsContainer');
-            const rows = container.getElementsByClassName('row-item');
-            let grandTotal = 0;
-            let hasValidDimensions = false;
-
-            Array.from(rows).forEach(row => {
-                const width = parseFloat(row.querySelector('.val-width').value) || 0;
-                const height = parseFloat(row.querySelector('.val-height').value) || 0;
-                const colorKey = row.querySelector('.val-color').value;
-
-                if (width > 0 && height > 0) {
-                    hasValidDimensions = true;
-                    let area = width * height;
-                    if (area < MIN_BILLABLE_AREA) {
-                        area = MIN_BILLABLE_AREA;
-                    }
-                    const rate = COLOR_PRICES[colorKey] || 0;
-                    grandTotal += Math.round(area * rate);
-                }
-            });
-
-            if (priceUnlocked) {
-                priceUnlocked = false;
-                document.getElementById('summaryCard').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
-                document.getElementById('submitBtn').innerText = "درخواست ثبت سفارش";
-            }
-
-            document.getElementById('priceLockNote').style.display = hasValidDimensions ? 'block' : 'none';
-        }
-
-        function previewLeadPhoto(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('photoPreview');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        function formatPersianCurrency(num) {
-            if (num === 0) return "۰ تومان";
-            return num.toLocaleString('fa-IR') + ' تومان';
-        }
-
-        function handleLeadSubmit(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('leadName').value.trim();
-            const phone = document.getElementById('leadPhone').value.trim();
-            const submitBtn = document.getElementById('submitBtn');
-            
-            const rows = document.getElementsByClassName('row-item');
-            let hasValidDimensions = false;
-            let itemsTextForTelegram = "";
-            let itemIndex = 1;
-            let grandTotal = 0;
-
-            Array.from(rows).forEach(row => {
-                const w = parseFloat(row.querySelector('.val-width').value) || 0;
-                const h = parseFloat(row.querySelector('.val-height').value) || 0;
-                const colorKey = row.querySelector('.val-color').value;
-                const colorName = COLOR_NAMES_FA[colorKey];
-
-                if (w > 0 && h > 0) {
-                    hasValidDimensions = true;
-                    let area = w * h;
-                    if (area < MIN_BILLABLE_AREA) area = MIN_BILLABLE_AREA;
-                    const rate = COLOR_PRICES[colorKey] || 0;
-                    const rowPrice = Math.round(area * rate);
-                    grandTotal += rowPrice;
-
-                    itemsTextForTelegram += `\n🔹 ردیف ${itemIndex}: عرض ${w} × ارتفاع ${h} متر | فریم: ${colorName} ➔ ${rowPrice.toLocaleString('fa-IR')} تومان`;
-                    itemIndex++;
-                }
-            });
-
-            if (!hasValidDimensions) {
-                showAlert("لطفاً حداقل ابعاد (عرض و ارتفاع) یک پنجره را به صورت معتبر وارد کنید.", "danger");
-                return;
-            }
-
-            if (!/^[0-9۰-۹]{10,11}$/.test(phone.replace(/[٠-٩۰-۹]/g, 'a'))) {
-                showAlert("لطفاً شماره تماس معتبر وارد کنید.", "danger");
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.innerText = "در حال ارسال درخواست...";
-
-            const messageText = `🔔 *درخواست جدید ثبت سفارش (اوج وین)*\n\n👤 *نام مشتری:* ${name}\n📞 *شماره تماس:* ${phone}\n\n📐 *جزئیات ابعاد وارد شده:*${itemsTextForTelegram}\n\n💰 *جمع کل مبلغ محاسباتی:* ${grandTotal.toLocaleString('fa-IR')} تومان`;
-
-            const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-            fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: messageText,
-                    parse_mode: 'Markdown'
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    priceUnlocked = true;
-                    document.getElementById('priceLockNote').style.display = 'none';
-                    document.getElementById('grandTotalDisplay').innerText = formatPersianCurrency(grandTotal);
-                    document.getElementById('summaryCard').style.display = 'block';
-                    showAlert("درخواست شما با موفقیت ثبت شد. کارشناسان اوج وین به‌زودی با شما تماس می‌گیرند.", "success");
-                    submitBtn.innerText = "ثبت شد ✓";
-
-                    const photoFile = document.getElementById('leadPhoto').files[0];
-                    if (photoFile) {
-                        const photoForm = new FormData();
-                        photoForm.append('chat_id', TELEGRAM_CHAT_ID);
-                        photoForm.append('caption', `📷 عکس ارسالی از ${name} (${phone})`);
-                        photoForm.append('photo', photoFile);
-                        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-                            method: 'POST',
-                            body: photoForm
-                        }).catch(err => console.error('Photo send failed', err));
-                    }
-                } else {
-                    showAlert("خطا در ارسال اطلاعات به تلگرام. لطفا مجددا تلاش کنید یا تماس بگیرید.", "danger");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert("خطای شبکه. لطفا اتصال اینترنت خود را بررسی کنید.", "danger");
-            })
-            .finally(() => {
-                submitBtn.disabled = priceUnlocked;
-                if(!priceUnlocked) submitBtn.innerText = "درخواست ثبت سفارش";
-            });
-        }
-
-        function showAlert(msg, type) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.innerText = msg;
-            alertBox.className = `alert-message alert-${type}`;
-            alertBox.style.display = 'block';
-            
-            if(type === 'success') {
-                setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
-            }
-        }
-
-        window.onload = function() {
-            addRow();
-        };
-    </script>
-</body>
-</html>
+          
